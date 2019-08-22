@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/login?useUnicode=true&characterEncoding=UTF-8&characterSetResults=utf8&serverTimezone=GMT
+    username: root
+    password: root
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+server:
+  port: 8081
+
+
+shiro:
+  enabled: true
+  web:
+    enabled: true
+  loginUrl: /login
+  successUrl: /index
+  unauthorizedUrl: /login
+  sessionManager:
+    sessionIdCookieEnabled: true
+    sessionIdUrlRewritingEnabled: true
