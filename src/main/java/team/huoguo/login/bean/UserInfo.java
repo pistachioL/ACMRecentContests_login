@@ -1,10 +1,13 @@
 package team.huoguo.login.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -14,10 +17,13 @@ import java.io.Serializable;
 
 @Entity(name = "userinfo")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class UserInfo implements Serializable {
 
     @Id
-    @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
+    @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
     @Column(nullable = false, unique=true)
@@ -25,7 +31,4 @@ public class UserInfo implements Serializable {
 
     @Column(nullable = false)
     private String password;
-
-    @Column(nullable = false)
-    private boolean enable;
 }

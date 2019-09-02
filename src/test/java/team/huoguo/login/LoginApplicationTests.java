@@ -11,6 +11,7 @@ public class LoginApplicationTests {
 
 	@Test
 	public void contextLoads() {
-	}
+
+    }
 
 }

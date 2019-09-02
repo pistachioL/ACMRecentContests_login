@@ -16,16 +16,20 @@ public class Result {
     private String message;
 
     //响应结果对象
-    private UserInfo data;
+    private Object data;
 
-    public Result(int code, String message, UserInfo loginInfo) {
+    public Result(int code){
         this.code = code;
-        this.message = message;
-        this.data = loginInfo;
     }
-
     public Result(int code, String message) {
         this.code = code;
         this.message = message;
     }
+
+    public Result(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
 }
