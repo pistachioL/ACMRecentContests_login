@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.huoguo.login.bean.UserInfo;
 import team.huoguo.login.exception.CustomException;
 import team.huoguo.login.service.UserRepository;
-import team.huoguo.login.untils.JWTUtil;
+import team.huoguo.login.utils.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,12 @@ import java.util.List;
  * @author GreenHatHG
  */
 
-public class ShiroRealm extends AuthorizingRealm{
+public class ShiroRealm extends AuthorizingRealm {
 
     private UserRepository userRepository;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository){
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -63,16 +63,16 @@ public class ShiroRealm extends AuthorizingRealm{
         String token = (String) auth.getCredentials();
         String username = JWTUtil.getUsername(token);
 
-        if (StringUtils.isBlank(username)){
-            throw  new CustomException(401, "token检验不通过");
+        if (StringUtils.isBlank(username)) {
+            throw new CustomException(401, "token检验不通过");
         }
 
         UserInfo userInfo = userRepository.findByUsername(username);
-        if(userInfo == null){
+        if (userInfo == null) {
             throw new CustomException(404, "用户不存在");
         }
 
-        if(!JWTUtil.verify(token, username, userInfo.getPassword())){
+        if (!JWTUtil.verify(token, username, userInfo.getPassword())) {
             throw new CustomException(401, "账户或者密码错误");
         }
 

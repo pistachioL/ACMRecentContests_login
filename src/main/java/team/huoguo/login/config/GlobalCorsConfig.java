@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * 跨域过滤器
+ *
  * @author GreenHatHG
  **/
 @Configuration
@@ -34,7 +35,7 @@ public class GlobalCorsConfig implements WebMvcConfigurer {
         config.addAllowedMethod("*");
         //2. 添加映射路径
         UrlBasedCorsConfigurationSource corsConfigurationSource = new UrlBasedCorsConfigurationSource();
-        corsConfigurationSource.registerCorsConfiguration("/**",config);
+        corsConfigurationSource.registerCorsConfiguration("/**", config);
         //3. 返回新的CorsFilter
         return new CorsFilter(corsConfigurationSource);
     }

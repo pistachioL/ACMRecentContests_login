@@ -26,9 +26,13 @@ public class UserInfo implements Serializable {
     @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
-    @Column(nullable = false, unique=true)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, unique = true)
+    private String mail;
+
 }

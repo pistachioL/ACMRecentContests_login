@@ -18,9 +18,10 @@ public class Result {
     //响应结果对象
     private Object data;
 
-    public Result(int code){
+    public Result(int code) {
         this.code = code;
     }
+
     public Result(int code, String message) {
         this.code = code;
         this.message = message;

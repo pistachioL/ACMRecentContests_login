@@ -15,9 +15,10 @@ import javax.servlet.http.HttpServletResponse;
  * 所有的请求都会先经过 Filter，所以我们继承官方的 BasicHttpAuthenticationFilter
  * 并且重写鉴权的方法
  * 代码的执行流程 preHandle -> isAccessAllowed -> isLoginAttempt -> executeLogin
+ *
  * @author GreenHatHG
  **/
-public class JWTFilter extends BasicHttpAuthenticationFilter{
+public class JWTFilter extends BasicHttpAuthenticationFilter {
 
     /**
      * 登录标识
@@ -27,6 +28,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter{
     /**
      * 检测用户是否登录
      * 检测header里面是否包含Authorization字段即可
+     *
      * @param request
      * @param response
      * @return
@@ -41,6 +43,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter{
     /**
      * executeLogin() 方法中的 getSubject(request, response).login(token)
      * 就是触发 Shiro Realm 自身的登录控制，具体内容需要手动实现
+     *
      * @param request
      * @param response
      * @return

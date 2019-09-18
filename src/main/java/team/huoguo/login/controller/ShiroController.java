@@ -9,8 +9,8 @@ import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.UserInfo;
 import team.huoguo.login.service.ResultFactory;
 import team.huoguo.login.service.UserRepository;
-import team.huoguo.login.untils.Argon2Util;
-import team.huoguo.login.untils.JWTUtil;
+import team.huoguo.login.utils.Argon2Util;
+import team.huoguo.login.utils.JWTUtil;
 
 import java.util.Map;
 
@@ -28,17 +28,17 @@ public class ShiroController {
         this.userRepository = userRepository;
     }
 
-    @PostMapping("/login")
-    public Result login(@RequestBody Map<String, String> payload){
+    @PostMapping("/v1/login")
+    public Result login(@RequestBody Map<String, String> payload) {
         String username = payload.get("username");
         String password = payload.get("password");
         final String errorMessage = "用户名或密码错误";
 
         UserInfo userInfo = userRepository.findByUsername(username);
-        if(userInfo == null){
+        if (userInfo == null) {
             return ResultFactory.buildFailResult(errorMessage);
         }
-        if(!Argon2Util.verify(userInfo.getPassword(), password)){
+        if (!Argon2Util.verify(userInfo.getPassword(), password)) {
             return ResultFactory.buildFailResult(errorMessage);
         }
         return JWTUtil.generateUserInfo(userInfo);

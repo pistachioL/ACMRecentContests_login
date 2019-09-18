@@ -1,4 +1,4 @@
-package team.huoguo.login.untils;
+package team.huoguo.login.utils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -15,7 +15,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  JWT加密，校验工具
+ * JWT加密，校验工具
+ *
  * @author GreenHatHG
  **/
 
@@ -27,6 +28,7 @@ public class JWTUtil {
 
     /**
      * 校验token是否正确
+     *
      * @param token    密钥
      * @param username 登录名
      * @param password 密码
@@ -47,6 +49,7 @@ public class JWTUtil {
 
     /**
      * 获得token中的信息无需secret解密也能获得
+     *
      * @return token中包含的用户名
      */
     public static String getUsername(String token) {
@@ -60,12 +63,13 @@ public class JWTUtil {
 
     /**
      * 生成签名
+     *
      * @param username 用户名
-     * @param secret 用户的密码
+     * @param secret   用户的密码
      * @return 加密的token
      */
     public static String sign(String username, String secret) {
-        Date date = new Date(System.currentTimeMillis()+EXPIRE_TIME);
+        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         // 附带username信息
         return JWT.create()
@@ -78,10 +82,11 @@ public class JWTUtil {
      * 生成前端需要的用户信息，包括：
      * 1. token
      * 2. userInfo
+     *
      * @param userInfo
      * @return
      */
-    public static Result generateUserInfo(UserInfo userInfo){
+    public static Result generateUserInfo(UserInfo userInfo) {
         Map<String, Object> responseBean = new HashMap<>(2);
         String token = sign(userInfo.getUsername(), userInfo.getPassword());
         responseBean.put("token", token);
