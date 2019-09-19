@@ -72,4 +72,4 @@ shiro:
 qiniu:
   accessKey: ANJS5owl4TouX7YMZqUwKKKMDWuWJy_PDAIujGVc
   secretKey: GJXLYDM0hXGKAeqXtEbFtnTBIUyviMxkTPGlZ3HZ
-  bucket: acmrecentcontents
+  bucket: acmrecentcontents-code

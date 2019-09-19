@@ -1,6 +1,5 @@
 package team.huoguo.login.config;
 
-import com.google.gson.Gson;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
@@ -52,11 +51,6 @@ public class FileUploadConfig {
     public com.qiniu.storage.Configuration qiniuConfig() {
         //华东
         return new com.qiniu.storage.Configuration(Region.region2());
-    }
-
-    @Bean
-    public Gson gson() {
-        return new Gson();
     }
 
 }

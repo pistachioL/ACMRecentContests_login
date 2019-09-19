@@ -45,8 +45,8 @@ public class RegisterController {
     @PostMapping("/v1/register")
     public Result register(@RequestBody UserInfo payload, @RequestParam(name = "code") String code) {
         String username = payload.getUsername();
-        String redisCode = redisUtil.getString(username).toString();
-        if(redisCode == null || !redisCode.equals(code)){
+        Object redisCode = redisUtil.getString(username);
+        if(redisCode == null || !redisCode.toString().equals(code)){
             return ResultFactory.buildFailResult("验证码已过期");
         }
 
