@@ -77,11 +77,16 @@ public class RegisterController {
     public Result getCode(@RequestBody Map<String, String> payload){
         String username = payload.get("username");
         String mail = payload.get("mail");
+        String type = payload.get("type");
         if(!Validator.isEmail(mail)){
             return ResultFactory.buildFailResult("邮箱格式不对");
         }
-        if(userRepository.findByMail(mail) != null){
+        UserInfo userInfo = userRepository.findByMail(mail);
+        if("register".equals(type) && userInfo != null){
             return ResultFactory.buildFailResult("邮箱已存在");
+        }
+        else if("restpwd".equals(type) && userInfo == null){
+            return ResultFactory.buildFailResult("邮箱不存在");
         }
         if(redisUtil.tooManyTimes(mail)){
             return ResultFactory.buildFailResult("该邮箱发送次数，请稍后再试");
@@ -90,15 +95,12 @@ public class RegisterController {
         System.out.println("code:  "+code);
         //mailService.sendMail(mail, code);
         //重复申请的话，会重新生成code,十分钟内最多三次
-        redisUtil.setString(username, code);
+        if("register".equals(type)){
+            redisUtil.setString(username, code);
+        }else if("resetpwd".equals(type)){
+            redisUtil.setString(mail+"resetpwd", code);
+        }
         return ResultFactory.buildSuccessResult(code);
     }
-
-//    @Autowired
-//    CircleCaptchaUtil circleCaptchaUtil;
-//    @GetMapping("/test")
-//    public String test(){
-//        return circleCaptchaUtil.setCircleCaptcha();
-//    }
 
 }

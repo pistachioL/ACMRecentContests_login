@@ -14,7 +14,7 @@ import java.util.HashMap;
  **/
 
 @RestController
-public class CircleCaptchaService {
+public class CircleCaptchaController {
 
     private CircleCaptchaUtil circleCaptchaUtil;
 

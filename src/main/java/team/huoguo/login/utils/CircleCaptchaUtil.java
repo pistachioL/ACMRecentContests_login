@@ -83,7 +83,6 @@ public class CircleCaptchaUtil {
             e.printStackTrace();
             return null;
         }
-
     }
 
 }
