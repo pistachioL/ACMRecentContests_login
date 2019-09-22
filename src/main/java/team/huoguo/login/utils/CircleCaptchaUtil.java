@@ -2,6 +2,7 @@ package team.huoguo.login.utils;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.ShearCaptcha;
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,6 +67,7 @@ public class CircleCaptchaUtil {
         hashMap.put("fileName", fileName);
         hashMap.put("file", filePath);
         hashMap.put("code", code);
+        hashMap.put("filePath", filePath);
         return hashMap;
     }
 
@@ -74,6 +76,7 @@ public class CircleCaptchaUtil {
             HashMap<String, String> hashMap = setCircleCaptcha();
             String fileName = hashMap.get("fileName");
             qnUploadService.uploadFile(hashMap.get("file"), fileName);
+            FileUtil.del(hashMap.get("filePath"));
             redisUtil.setString(fileName, hashMap.get("code").toLowerCase());
             redisUtil.expire(fileName, 10*60);
             HashMap<String, String> resp = new HashMap<>(1);

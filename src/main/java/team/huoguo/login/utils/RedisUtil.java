@@ -60,6 +60,14 @@ public class RedisUtil {
     }
 
     /**
+     * 删除对应的key
+     * @param key
+     */
+    public void deleteKey(String key){
+        redisTemplate.delete(key);
+    }
+
+    /**
      * 查询发送给某个邮箱的次数是否过多
      * @param mail
      * @return

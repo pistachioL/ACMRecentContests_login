@@ -59,6 +59,7 @@ public class RegisterController {
             return ResultFactory.buildFailResult("邮箱已存在");
         }
 
+        redisUtil.deleteKey(username);
         UserInfo userInfo = new UserInfo();
         userInfo.setUsername(username);
         userInfo.setPassword(Argon2Util.hash(password));
@@ -93,7 +94,7 @@ public class RegisterController {
         }
         String code = mailService.getCode();
         System.out.println("code:  "+code);
-        //mailService.sendMail(mail, code);
+        mailService.sendMail(mail, code);
         //重复申请的话，会重新生成code,十分钟内最多三次
         if("register".equals(type)){
             redisUtil.setString(username, code);

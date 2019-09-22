@@ -1,5 +1,6 @@
 package team.huoguo.login.controller;
 
+import cn.hutool.core.lang.Validator;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,13 @@ public class ShiroController {
         }
         String username = jsonObject.getStr("username");
         String password = jsonObject.getStr("password");
-
-        UserInfo userInfo = userRepository.findByUsername(username);
+        redisUtil.deleteKey(fileName);
+        UserInfo userInfo = null;
+        if(!Validator.isEmail(username)){
+            userInfo = userRepository.findByUsername(username);
+        }else{
+            userInfo = userRepository.findByMail(username);
+        }
         if (userInfo == null) {
             return ResultFactory.buildFailResult(errorMessage);
         }

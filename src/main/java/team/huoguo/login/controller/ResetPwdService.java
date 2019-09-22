@@ -45,6 +45,7 @@ public class ResetPwdService {
         else if(!code.toLowerCase().equals(redisUtil.getString(mail+"resetpwd"))){
             return ResultFactory.buildFailResult("验证码错误");
         }
+        redisUtil.deleteKey(mail+"resetpwd");
         userRepository.updatePasswordByEmail(mail, Argon2Util.hash(password));
         return ResultFactory.buildSuccessResult("成功");
     }
