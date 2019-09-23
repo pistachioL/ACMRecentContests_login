@@ -54,9 +54,13 @@ spring:
       max-file-size: 2MB
 
 server:
-  port: 8081
+  port: 8082
   tomcat:
     uri-encoding: UTF-8
+    # 下面三行nginx转发tomcat配置
+    protocol-header: x-forwarded-proto
+  use-forward-headers: true
+  address: 127.0.0.1
 
 shiro:
   enabled: true

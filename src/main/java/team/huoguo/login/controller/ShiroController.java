@@ -23,6 +23,7 @@ import java.util.Map;
  */
 
 @RestController
+@RequestMapping(value="/api")
 public class ShiroController {
 
     private UserRepository userRepository;
@@ -43,7 +44,7 @@ public class ShiroController {
         JSONObject jsonObject = JSONUtil.parseObj(payload);
 
         String code = jsonObject.getStr("code");
-        String fileName = jsonObject.getStr("fileName");
+        String fileName = jsonObject.getStr("imgId");
         System.out.println(code.toLowerCase());
         System.out.println(fileName);
         System.out.println(redisUtil.getString(fileName));

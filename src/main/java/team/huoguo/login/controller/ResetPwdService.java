@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.huoguo.login.bean.Result;
 import team.huoguo.login.service.ResultFactory;
@@ -19,6 +20,7 @@ import java.util.Map;
  **/
 
 @RestController
+@RequestMapping(value="/api")
 public class ResetPwdService {
 
     private UserRepository userRepository;

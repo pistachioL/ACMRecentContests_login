@@ -2,10 +2,7 @@ package team.huoguo.login.controller;
 
 import cn.hutool.core.lang.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.UserInfo;
 import team.huoguo.login.service.MailService;
@@ -21,6 +18,7 @@ import java.util.Map;
  */
 
 @RestController
+@RequestMapping(value="/api")
 public class RegisterController {
 
     private UserRepository userRepository;

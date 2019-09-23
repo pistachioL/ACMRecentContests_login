@@ -9,9 +9,13 @@ import com.qiniu.util.StringMap;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * @author GreenHatHG
@@ -22,6 +26,12 @@ public class QnUploadService implements InitializingBean {
     private UploadManager uploadManager;
     private BucketManager bucketManager;
     private Auth auth;
+
+    private final ResourceLoader resourceLoader;
+
+    public QnUploadService(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     @Autowired
     public void setUploadManager(UploadManager uploadManager) {
@@ -54,7 +64,8 @@ public class QnUploadService implements InitializingBean {
      * @throws QiniuException
      */
     public String uploadFile(String path, String fileName) throws QiniuException {
-        File file = new File(path);
+
+        File file = new File(readFileInJar(path));
         Response response = this.uploadManager.put(file, fileName, getUploadToken());
         int retry = 0;
         while (response.needRetry() && retry < 3) {
@@ -96,4 +107,21 @@ public class QnUploadService implements InitializingBean {
         return this.auth.uploadToken(bucket, null, 3600, putPolicy);
     }
 
+    public String readFileInJar(String path) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(resourceLoader.getResource(path).getInputStream()));
+            String s;
+            try {
+                while ((s = in.readLine()) != null) {
+                    sb.append(s);
+                }
+            } finally {
+                in.close();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sb.toString();
+    }
 }
