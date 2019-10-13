@@ -47,6 +47,7 @@ public class ShiroController {
         String fileName = jsonObject.getStr("imgId");
         System.out.println(code.toLowerCase());
         System.out.println(fileName);
+
         System.out.println(redisUtil.getString(fileName));
         if(!code.toLowerCase().equals(redisUtil.getString(fileName))){
             return ResultFactory.buildFailResult("验证码错误");

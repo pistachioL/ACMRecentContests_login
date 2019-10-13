@@ -41,7 +41,7 @@ public class ShiroConfig {
     }
 
     @Primary
-    @Bean()
+    @Bean
     public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 配置 SecurityManager，并注入 shiroRealm

@@ -21,8 +21,7 @@ public class MailService {
     /**
      * 发送邮件的邮箱地址
      */
-    private final String FROM = "acmrecentcontents@aliyun.com"
-            ;
+    private final String FROM = "acmrecentcontents@aliyun.com";
 
     @Autowired
     private JavaMailSender mailSender;
@@ -86,7 +85,8 @@ public class MailService {
 
     public void sendMail(String to, String code){
         String subject = "ACM赛事提醒与管理平台";
-        String content = "验证码：" + code + "\n" + "非常感谢注册ACM赛事提醒与管理平台,你的支持是对我们最大的鼓励!";
+        String s = "\n" + "非常感谢注册ACM赛事提醒与管理平台,你的支持是对我们最大的鼓励!" + "\n" + "验证码过期时间：3分钟";
+        String content = "验证码：" + code + s;
         sendSimpleMail(to, subject, content);
     }
 
