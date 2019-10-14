@@ -1,7 +1,6 @@
 package team.huoguo.login.shiro;
 
 import cn.hutool.json.JSONUtil;
-import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
@@ -84,8 +83,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 }
             }
         }
-        Subject subject = getSubject(request, response);
-        return subject.isAuthenticated();
+        return true;
     }
 
     @Override

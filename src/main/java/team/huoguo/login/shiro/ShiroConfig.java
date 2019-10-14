@@ -1,6 +1,7 @@
 package team.huoguo.login.shiro;
 
 import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
+import org.apache.shiro.mgt.DefaultSubjectDAO;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
@@ -52,9 +53,12 @@ public class ShiroConfig {
         // 配置 SecurityManager，并注入 shiroRealm
         securityManager.setRealm(shiroRealm());
 
-        // 关闭自带session
-        DefaultSessionStorageEvaluator evaluator = new DefaultSessionStorageEvaluator();
-        evaluator.setSessionStorageEnabled(false);
+        // 关闭Shiro自带的session
+        DefaultSubjectDAO subjectDAO = new DefaultSubjectDAO();
+        DefaultSessionStorageEvaluator defaultSessionStorageEvaluator = new DefaultSessionStorageEvaluator();
+        defaultSessionStorageEvaluator.setSessionStorageEnabled(false);
+        subjectDAO.setSessionStorageEvaluator(defaultSessionStorageEvaluator);
+        securityManager.setSubjectDAO(subjectDAO);
 
         return securityManager;
     }
@@ -65,11 +69,4 @@ public class ShiroConfig {
         // 配置 Realm
         return new ShiroRealm();
     }
-//
-//    @Bean
-//    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-//        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-//        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-//        return authorizationAttributeSourceAdvisor;
-//    }
 }

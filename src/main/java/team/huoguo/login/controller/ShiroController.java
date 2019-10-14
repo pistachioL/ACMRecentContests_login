@@ -10,8 +10,8 @@ import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.service.ResultFactory;
 import team.huoguo.login.service.UserRepository;
-import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.shiro.JWTUtil;
+import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 
 import java.util.Map;
@@ -19,7 +19,6 @@ import java.util.Map;
 /**
  * @author GreenHatHG
  */
-
 @RestController
 @RequestMapping(value="/api/v1")
 public class ShiroController {

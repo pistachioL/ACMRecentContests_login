@@ -25,7 +25,7 @@ public class JWTUtil {
 
     // 过期时间1天
 //    private static final long EXPIRE_TIME = 24* 60 * 60 * 1000;
-    private static final long EXPIRE_TIME =  60*1000;
+    private static final long EXPIRE_TIME =  100*60*60*1000;
 
     /**
      * 校验token是否正确
@@ -40,7 +40,6 @@ public class JWTUtil {
             //对秘钥进行加密后再与用户名混淆在一起
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm)
-                    .acceptExpiresAt(EXPIRE_TIME)
                     .withClaim("username", username)
                     .build();
             DecodedJWT jwt = verifier.verify(token);

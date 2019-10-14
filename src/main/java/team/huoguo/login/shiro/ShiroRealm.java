@@ -69,6 +69,6 @@ public class ShiroRealm extends AuthorizingRealm {
         }
 
         //认证成功，将用户信息封装成SimpleAuthenticationInfo
-        return new SimpleAuthenticationInfo(token, token, "realm");
+        return new SimpleAuthenticationInfo(token, token, "shiroRealm");
     }
 }
