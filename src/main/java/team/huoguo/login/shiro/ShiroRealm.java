@@ -10,10 +10,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import team.huoguo.login.bean.UserInfo;
-import team.huoguo.login.exception.CustomException;
 import team.huoguo.login.service.UserRepository;
-import team.huoguo.login.utils.JWTUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,19 +58,14 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
-        String username = JWTUtil.getUsername(token);
+        String userName = JWTUtil.getUsername(token);
+        String secert = userRepository.getCredentials(userName);
 
-        if (StringUtils.isBlank(username)) {
-            throw new CustomException(401, "token检验不通过");
-        }
-
-        UserInfo userInfo = userRepository.findByUsername(username);
-        if (userInfo == null) {
-            throw new CustomException(404, "用户不存在");
-        }
-
-        if (!JWTUtil.verify(token, username, userInfo.getPassword())) {
-            throw new CustomException(401, "账户或者密码错误");
+        /**
+         * token为空或者不通过
+         */
+        if (StringUtils.isBlank(token) || !JWTUtil.verify(token, userName, secert)) {
+            throw new AuthenticationException("token校验不通过");
         }
 
         //认证成功，将用户信息封装成SimpleAuthenticationInfo

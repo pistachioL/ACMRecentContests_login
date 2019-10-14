@@ -1,7 +1,7 @@
 package team.huoguo.login.shiro;
 
+import org.apache.shiro.mgt.DefaultSessionStorageEvaluator;
 import org.apache.shiro.mgt.SecurityManager;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.context.annotation.Bean;
@@ -22,9 +22,14 @@ public class ShiroConfig {
 
     @Primary
     @Bean
+    /**
+     * 设置过滤器，将自定义的Filter加入
+     */
     public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager securityManager) {
+        //用于定义主Shiro Filter
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
-        // 设置 securityManager
+        //设置要构造的Shiro Filter使用的SecurityManager实例
+        //这是必填属性-设置失败将引发初始化异常
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 在 Shiro过滤器链上加入 JWTFilter
@@ -46,6 +51,11 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 配置 SecurityManager，并注入 shiroRealm
         securityManager.setRealm(shiroRealm());
+
+        // 关闭自带session
+        DefaultSessionStorageEvaluator evaluator = new DefaultSessionStorageEvaluator();
+        evaluator.setSessionStorageEnabled(false);
+
         return securityManager;
     }
 
@@ -55,11 +65,11 @@ public class ShiroConfig {
         // 配置 Realm
         return new ShiroRealm();
     }
-
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
-    }
+//
+//    @Bean
+//    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+//        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+//        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+//        return authorizationAttributeSourceAdvisor;
+//    }
 }

@@ -4,7 +4,7 @@ import cn.hutool.core.lang.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.bean.UserInfo;
+import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.service.MailService;
 import team.huoguo.login.service.ResultFactory;
 import team.huoguo.login.service.UserRepository;
@@ -16,9 +16,8 @@ import java.util.Map;
 /**
  * @author GreenHatHG
  */
-
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/v1")
 public class RegisterController {
 
     private UserRepository userRepository;
@@ -40,7 +39,7 @@ public class RegisterController {
         this.mailService = mailService;
     }
 
-    @PostMapping("/v1/register")
+    @PostMapping("/register")
     public Result register(@RequestBody UserInfo payload, @RequestParam(name = "code") String code) {
         String username = payload.getUsername();
         Object redisCode = redisUtil.getString(username);
@@ -72,7 +71,7 @@ public class RegisterController {
         return ResultFactory.buildSuccessResult("成功");
     }
 
-    @PostMapping("/v1/code")
+    @PostMapping("/code")
     public Result getCode(@RequestBody Map<String, String> payload){
         String username = payload.get("username");
         String mail = payload.get("mail");

@@ -17,7 +17,7 @@ import java.util.HashMap;
  **/
 
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/v1")
 public class CircleCaptchaController {
 
     private CircleCaptchaUtil circleCaptchaUtil;
@@ -31,7 +31,7 @@ public class CircleCaptchaController {
      * 获取七牛上面验证码图片的文件名
      * @return
      */
-    @GetMapping("/v1/captcha")
+    @GetMapping("/captcha")
     public Result getCaptcha(HttpServletResponse response)  {
         try{
             CircleCaptcha circleCaptcha = circleCaptchaUtil.getCircleCaptcha();

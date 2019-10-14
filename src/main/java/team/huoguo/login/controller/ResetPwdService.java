@@ -20,7 +20,7 @@ import java.util.Map;
  **/
 
 @RestController
-@RequestMapping(value="/api")
+@RequestMapping(value="/api/v1")
 public class ResetPwdService {
 
     private UserRepository userRepository;
@@ -35,7 +35,7 @@ public class ResetPwdService {
         this.redisUtil = redisUtil;
     }
 
-    @PostMapping("/v1/resetpwd")
+    @PostMapping("/resetpwd")
     public Result reset(@RequestBody Map<String, Object> payload){
         JSONObject jsonObject = JSONUtil.parseObj(payload);
         String mail = jsonObject.getStr("mail");
