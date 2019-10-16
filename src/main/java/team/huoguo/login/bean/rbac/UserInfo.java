@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 /**
  * 用户信息表
@@ -57,5 +57,5 @@ public class UserInfo implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "SysUserRole", joinColumns = { @JoinColumn(name = "uid") }
         ,inverseJoinColumns ={@JoinColumn(name = "roleId")})
-    private List<SysRole> roleList;
+    private Set<SysRole> roleList;
 }

@@ -1,8 +1,8 @@
 package team.huoguo.login.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.consts.ResultCodeEnum;
 
 /**
  * @author GreenHatHG
@@ -10,19 +10,25 @@ import team.huoguo.login.consts.ResultCodeEnum;
 
 @Component
 public class ResultFactory {
+    private static final int success = 0;
+
     public static Result buildSuccessResult(Object data) {
-        return new Result(ResultCodeEnum.SUCCESS.code, "成功", data);
+        return new Result(success, "成功", data);
     }
 
     public static Result buildSuccessResult(String message) {
-        return new Result(ResultCodeEnum.SUCCESS.code, message);
+        return new Result(success, message);
     }
 
     public static Result buildFailResult(String message) {
-        return new Result(ResultCodeEnum.FAIL.code, message);
+        return new Result(HttpStatus.BAD_REQUEST.value(), message);
     }
 
     public static Result buildUnauthorizedResult(String message) {
-        return new Result(ResultCodeEnum.UNAUTHORIZED.code, message);
+        return new Result(HttpStatus.UNAUTHORIZED.value(), message);
+    }
+
+    public static Result buildCustomResult(int code, String message, Object data){
+        return new Result(code, message, data);
     }
 }

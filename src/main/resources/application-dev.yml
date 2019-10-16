@@ -62,16 +62,16 @@ server:
   use-forward-headers: true
   address: 127.0.0.1
 
-shiro:
-  enabled: true
-  web:
-    enabled: true
-  loginUrl: /login
-  successUrl: /index
-  unauthorizedUrl: /login
-  sessionManager:
-    sessionIdCookieEnabled: true
-    sessionIdUrlRewritingEnabled: true
+#shiro:
+#  enabled: true
+#  web:
+#    enabled: true
+#  loginUrl: /login
+#  successUrl: /index
+#  unauthorizedUrl: /login
+#  sessionManager:
+#    sessionIdCookieEnabled: true
+#    sessionIdUrlRewritingEnabled: true
 
 qiniu:
   accessKey: ANJS5owl4TouX7YMZqUwKKKMDWuWJy_PDAIujGVc

@@ -1,5 +1,6 @@
 package team.huoguo.login.shiro;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -10,10 +11,14 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import team.huoguo.login.bean.rbac.SysPermission;
+import team.huoguo.login.bean.rbac.SysRole;
+import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.service.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author GreenHatHG
@@ -40,13 +45,33 @@ public class ShiroRealm extends AuthorizingRealm {
 
     /**
      * 执行授权逻辑
+     * 只有当需要检测用户权限的时候才会调用此方法，例如checkRole,checkPermission之类的
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+        String username = JWTUtil.getUsername(principalCollection.toString());
+        UserInfo userInfo = userRepository.findByUsername(username);
+        List<String> permissionList = new ArrayList<>();
+        List<String> roleNameList = new ArrayList<>();
+        Set<SysRole> roleSet = userInfo.getRoleList();
+
+        if (CollectionUtils.isNotEmpty(roleSet)) {
+            for (SysRole role : roleSet) {
+                // 添加角色
+                roleNameList.add(role.getName());
+                // 根据用户角色查询权限
+                Set<SysPermission> permissionSet = role.getPermissions();
+                if (CollectionUtils.isNotEmpty(permissionSet)) {
+                    for (SysPermission permission : permissionSet) {
+                        // 添加权限
+                        permissionList.add(permission.getUrl());
+                    }
+                }
+            }
+        }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        List<String> userPermissions = new ArrayList<>();
-        userPermissions.add("user");
-        info.addStringPermissions(userPermissions);
+        info.addStringPermissions(permissionList);
+        info.addRoles(roleNameList);
         return info;
     }
 

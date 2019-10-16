@@ -1,11 +1,13 @@
 package team.huoguo.login.shiro;
 
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import team.huoguo.login.bean.Result;
+import team.huoguo.login.exception.CustomException;
 import team.huoguo.login.service.ResultFactory;
 
 import javax.servlet.ServletRequest;
@@ -13,6 +15,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * 创建JWTFilter实现前端请求统一拦截及处理
@@ -74,18 +77,21 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             try {
                 executeLogin(request, response);
             } catch (Exception e) {
-                Result result = ResultFactory.buildFailResult("token检验失败");
-                try {
-                    response.setContentType("application/json;charset=utf-8");
-                    response.getWriter().println(JSONUtil.parseObj(result));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                // 认证出现异常，传递错误信息msg
+                String msg = e.getMessage();
+                // Token认证失败直接返回Response信息
+                this.response401(response, msg);
+                return false;
             }
         }
         return true;
     }
 
+    /**
+     * 这里我们详细说明下为什么重写
+     * 可以对比父类方法，只是将executeLogin方法调用去除了
+     * 如果没有去除将会循环调用doGetAuthenticationInfo方法
+     */
     @Override
     protected boolean onAccessDenied(ServletRequest request, ServletResponse response) throws Exception {
         this.sendChallenge(request, response);
@@ -110,5 +116,21 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return super.preHandle(request, response);
     }
 
-    //TODO 此处为AccessToken刷新，进行判断RefreshToken是否过期，未过期就返回新的AccessToken且继续正常访问
+    /**
+     * 无需转发，直接返回Response信息
+     */
+    private void response401(ServletResponse response, String msg) {
+        HttpServletResponse httpServletResponse = WebUtils.toHttp(response);
+        httpServletResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        httpServletResponse.setCharacterEncoding("UTF-8");
+        httpServletResponse.setContentType("application/json; charset=utf-8");
+        try (PrintWriter out = httpServletResponse.getWriter()) {
+            Result result = ResultFactory.buildUnauthorizedResult("无权访问(Unauthorized):" + msg);
+            JSONObject jsonObject = JSONUtil.parseObj(result);
+            out.append(jsonObject.toString());
+        } catch (IOException e) {
+            throw new CustomException("直接返回Response信息出现IOException异常:" + e.getMessage());
+        }
+    }
+
 }

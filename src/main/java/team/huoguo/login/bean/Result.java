@@ -1,12 +1,14 @@
 package team.huoguo.login.bean;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author GreenHatHG
  */
 
 @Data
+@NoArgsConstructor
 public class Result {
 
     //响应状态码
