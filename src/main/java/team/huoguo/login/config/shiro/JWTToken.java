@@ -1,4 +1,4 @@
-package team.huoguo.login.shiro;
+package team.huoguo.login.config.shiro;
 
 import org.apache.shiro.authc.AuthenticationToken;
 

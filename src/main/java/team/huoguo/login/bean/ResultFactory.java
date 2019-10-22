@@ -1,8 +1,7 @@
-package team.huoguo.login.service;
+package team.huoguo.login.bean;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import team.huoguo.login.bean.Result;
 
 /**
  * @author GreenHatHG

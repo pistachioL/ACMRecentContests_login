@@ -1,4 +1,4 @@
-package team.huoguo.login.shiro;
+package team.huoguo.login.config.shiro;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import team.huoguo.login.bean.Result;
 import team.huoguo.login.exception.CustomException;
-import team.huoguo.login.service.ResultFactory;
+import team.huoguo.login.bean.ResultFactory;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

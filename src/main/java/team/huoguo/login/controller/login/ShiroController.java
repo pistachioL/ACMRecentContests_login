@@ -1,4 +1,4 @@
-package team.huoguo.login.controller;
+package team.huoguo.login.controller.login;
 
 import cn.hutool.core.lang.Validator;
 import cn.hutool.json.JSONObject;
@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.rbac.UserInfo;
-import team.huoguo.login.service.ResultFactory;
-import team.huoguo.login.service.UserRepository;
-import team.huoguo.login.shiro.JWTUtil;
+import team.huoguo.login.bean.ResultFactory;
+import team.huoguo.login.Repository.UserRepository;
+import team.huoguo.login.config.shiro.JWTUtil;
 import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 

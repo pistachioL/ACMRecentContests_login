@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.service.ResultFactory;
+import team.huoguo.login.bean.ResultFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ShiroException.class)
     public Result handle401(ShiroException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + e.getMessage(), null);
     }
 
@@ -46,6 +47,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedException.class)
     public Result handle401(UnauthorizedException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):当前Subject没有此请求所需权限(" + e.getMessage() + ")", null);
     }
 
@@ -58,6 +60,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthenticatedException.class)
     public Result handle401(UnauthenticatedException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):当前Subject是匿名Subject，请先登录(This subject is anonymous.)", null);
     }
 
@@ -68,6 +71,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(CustomUnauthorizedException.class)
     public Result handle401(CustomUnauthorizedException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.UNAUTHORIZED.value(), "无权访问(Unauthorized):" + e.getMessage(), null);
     }
 
@@ -78,6 +82,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     public Result validException(BindException e) {
+        e.printStackTrace();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         Map<String, Object> result = this.getValidError(fieldErrors);
         return ResultFactory.buildCustomResult(HttpStatus.BAD_REQUEST.value(), result.get("errorMsg").toString(), result.get("errorList"));
@@ -90,6 +95,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Result validException(MethodArgumentNotValidException e) {
+        e.printStackTrace();
         List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
         Map<String, Object> result = this.getValidError(fieldErrors);
         return ResultFactory.buildCustomResult(HttpStatus.BAD_REQUEST.value(), result.get("errorMsg").toString(), result.get("errorList"));
@@ -102,6 +108,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(CustomException.class)
     public Result handle(CustomException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.BAD_REQUEST.value(), e.getMessage(), null);
     }
 
@@ -112,6 +119,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public Result handle(NoHandlerFoundException e) {
+        e.printStackTrace();
         return ResultFactory.buildCustomResult(HttpStatus.NOT_FOUND.value(), e.getMessage(), null);
     }
 
@@ -124,6 +132,7 @@ public class ExceptionAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public Result globalException(HttpServletRequest request, Throwable ex) {
+        ex.printStackTrace();
         return ResultFactory.buildCustomResult(this.getStatus(request).value(), ex.toString() + ": " + ex.getMessage(), null);
     }
 

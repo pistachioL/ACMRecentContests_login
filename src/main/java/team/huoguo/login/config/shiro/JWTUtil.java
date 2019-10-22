@@ -1,4 +1,4 @@
-package team.huoguo.login.shiro;
+package team.huoguo.login.config.shiro;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
@@ -8,7 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.stereotype.Component;
 import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.rbac.UserInfo;
-import team.huoguo.login.service.ResultFactory;
+import team.huoguo.login.bean.ResultFactory;
 
 import java.util.Date;
 import java.util.HashMap;

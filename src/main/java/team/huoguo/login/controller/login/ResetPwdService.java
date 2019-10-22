@@ -1,4 +1,4 @@
-package team.huoguo.login.controller;
+package team.huoguo.login.controller.login;
 
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.service.ResultFactory;
-import team.huoguo.login.service.UserRepository;
+import team.huoguo.login.bean.ResultFactory;
+import team.huoguo.login.Repository.UserRepository;
 import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 

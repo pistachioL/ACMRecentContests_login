@@ -39,6 +39,11 @@ public class UserInfo implements Serializable {
     private String mail;
 
     /**
+     * 家乡城市代码，需要变成数组传递给前端，["120000","120100","120102"]
+     */
+    private String city;
+
+    /**
      * 创建时间
      */
     @CreatedDate

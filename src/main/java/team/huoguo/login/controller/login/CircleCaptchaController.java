@@ -1,4 +1,4 @@
-package team.huoguo.login.controller;
+package team.huoguo.login.controller.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.huoguo.login.bean.CircleCaptcha;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.service.ResultFactory;
+import team.huoguo.login.bean.ResultFactory;
 import team.huoguo.login.utils.CircleCaptchaUtil;
 
 import javax.servlet.http.HttpServletResponse;
