@@ -98,7 +98,7 @@ public class RegisterController {
         }else if("resetpwd".equals(type)){
             redisUtil.setString(mail+"resetpwd", code);
         }
-        return ResultFactory.buildSuccessResult(code);
+        return ResultFactory.buildSuccessResult("成功");
     }
 
 }

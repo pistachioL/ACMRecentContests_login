@@ -22,6 +22,9 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Query(value = "select password from userinfo where username = ?1", nativeQuery = true)
     String getCredentials(String username);
 
+    @Query(value = "select mail from userinfo where id = ?1")
+    String findEmailById(String id);
+
     @Transactional
     @Modifying
     @Query(value = "update userinfo t set t.username=?1 where t.id=?2", nativeQuery = true)
@@ -37,5 +40,8 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Query(value = "update userinfo t set t.password=?2 where t.mail=?1", nativeQuery = true)
     void updatePasswordByEmail(String email, String password);
 
-
+    @Transactional
+    @Modifying
+    @Query(value = "update userinfo t set t.mail=?1 where t.id=?2", nativeQuery = true)
+    void updateEmailById(String email, String id);
 }
