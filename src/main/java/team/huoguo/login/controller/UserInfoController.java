@@ -37,4 +37,19 @@ public class UserInfoController {
         return ResultFactory.buildSuccessResult("成功");
     }
 
+    @PutMapping("city")
+    public Result updateCity(HttpServletRequest request, @NotNull String city){
+        String id = JWTUtil.getId(request.getHeader("Authorization"));
+        if(!userRepository.findById(id).isPresent()){
+            return ResultFactory.buildFailResult("查无此人");
+        }
+        try{
+            userRepository.updateCityById(city, id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultFactory.buildFailResult("更新失败-->" + e.getMessage());
+        }
+        return ResultFactory.buildSuccessResult("成功");
+    }
+
 }
