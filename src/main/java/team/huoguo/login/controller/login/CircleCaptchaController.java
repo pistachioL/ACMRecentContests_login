@@ -9,7 +9,6 @@ import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.ResultFactory;
 import team.huoguo.login.utils.CircleCaptchaUtil;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 /**
@@ -32,10 +31,10 @@ public class CircleCaptchaController {
      * @return
      */
     @GetMapping("/captcha")
-    public Result getCaptcha(HttpServletResponse response)  {
+    public Result getCaptcha()  {
         try{
             CircleCaptcha circleCaptcha = circleCaptchaUtil.getCircleCaptcha();
-            HashMap<String, String> resp = new HashMap<>();
+            HashMap<String, String> resp = new HashMap<>(2);
             resp.put("id", circleCaptcha.getId());
             resp.put("base64", circleCaptcha.getBase64Str());
             return ResultFactory.buildSuccessResult(resp);

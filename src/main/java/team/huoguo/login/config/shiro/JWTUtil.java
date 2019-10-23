@@ -24,8 +24,7 @@ import java.util.Map;
 public class JWTUtil {
 
     // 过期时间1天
-//    private static final long EXPIRE_TIME = 24* 60 * 60 * 1000;
-    private static final long EXPIRE_TIME =  100*60*60*1000;
+    private static final long EXPIRE_TIME = 24* 60 * 60 * 1000;
 
     /**
      * 校验token是否正确
@@ -63,6 +62,15 @@ public class JWTUtil {
         }
     }
 
+    public static String getId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("id").asString();
+        } catch (JWTDecodeException e) {
+            return "";
+        }
+    }
+
     /**
      * 生成签名
      *
@@ -70,13 +78,14 @@ public class JWTUtil {
      * @param secret   用户的密码
      * @return 加密的token
      */
-    private static String sign(String username, String secret) {
+    private static String sign(String id, String username, String secret) {
         // 指定过期时间
         Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         Algorithm algorithm = Algorithm.HMAC256(secret);
         // 附带username信息
         return JWT.create()
                 .withClaim("username", username)
+                .withClaim("id", id)
                 .withExpiresAt(date)
                 .sign(algorithm);
     }
@@ -91,7 +100,7 @@ public class JWTUtil {
      */
     public static Result generateUserInfo(UserInfo userInfo) {
         Map<String, Object> responseBean = new HashMap<>(2);
-        String token = sign(userInfo.getUsername(), userInfo.getPassword());
+        String token = sign(userInfo.getId(), userInfo.getUsername(), userInfo.getPassword());
         responseBean.put("token", token);
         userInfo.setPassword("");
         responseBean.put("userInfo", userInfo);

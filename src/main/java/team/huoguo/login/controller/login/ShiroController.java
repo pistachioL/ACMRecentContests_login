@@ -3,14 +3,13 @@ package team.huoguo.login.controller.login;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
-import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.bean.ResultFactory;
-import team.huoguo.login.Repository.UserRepository;
+import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.config.shiro.JWTUtil;
+import team.huoguo.login.repository.UserRepository;
 import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 
@@ -69,7 +68,7 @@ public class ShiroController {
     }
 
     @GetMapping("/123")
-    @RequiresAuthentication
+//    @RequiresAuthentication
     public Result test(){
         System.out.println(111);
         return ResultFactory.buildSuccessResult("成功");

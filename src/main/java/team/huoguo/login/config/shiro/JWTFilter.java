@@ -67,7 +67,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
-
     /**
      * 一般在isAccessAllowed中执行认证逻辑
      */
@@ -78,9 +77,8 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
                 executeLogin(request, response);
             } catch (Exception e) {
                 // 认证出现异常，传递错误信息msg
-                String msg = e.getMessage();
                 // Token认证失败直接返回Response信息
-                this.response401(response, msg);
+                this.response401(response, e.getMessage());
                 return false;
             }
         }

@@ -1,4 +1,4 @@
-package team.huoguo.login.Repository;
+package team.huoguo.login.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
 
     UserInfo findByUsername(String username);
 
+    UserInfo findByMail(String mail);
     /**
      * @param username 用户名
      * @return 数据库中对应的密码
@@ -23,13 +24,13 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "update userinfo t set t.status=?2 where t.username=?1", nativeQuery = true)
-    void updateStatusByUsername(String username, int status);
-
-    UserInfo findByMail(String mail);
+    @Query(value = "update userinfo t set t.username=?1 where t.id=?2", nativeQuery = true)
+    void updateUsernameById(String username, String id);
 
     @Transactional
     @Modifying
     @Query(value = "update userinfo t set t.password=?2 where t.mail=?1", nativeQuery = true)
     void updatePasswordByEmail(String email, String password);
+
+
 }

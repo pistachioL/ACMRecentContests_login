@@ -30,8 +30,6 @@ spring:
       ddl-auto: update
 
   http:
-    converters:
-      preferred-json-mapper: gson
     encoding:
       charset: UTF-8
       enabled: true

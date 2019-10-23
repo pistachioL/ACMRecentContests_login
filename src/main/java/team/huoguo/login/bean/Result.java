@@ -3,13 +3,15 @@ package team.huoguo.login.bean;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * @author GreenHatHG
  */
 
 @Data
 @NoArgsConstructor
-public class Result {
+public class Result implements Serializable {
 
     //响应状态码
     private int code;

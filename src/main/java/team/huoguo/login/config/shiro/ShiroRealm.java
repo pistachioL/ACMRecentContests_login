@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.huoguo.login.bean.rbac.SysPermission;
 import team.huoguo.login.bean.rbac.SysRole;
 import team.huoguo.login.bean.rbac.UserInfo;
-import team.huoguo.login.Repository.UserRepository;
+import team.huoguo.login.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

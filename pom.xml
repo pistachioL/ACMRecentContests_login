@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.1.7.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>team.huoguo</groupId>
     <artifactId>login</artifactId>
@@ -29,19 +29,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
-
-        <!--        <dependency>-->
-        <!--            <groupId>org.apache.shiro</groupId>-->
-        <!--            <artifactId>shiro-spring-boot-web-starter</artifactId>-->
-        <!--            <version>1.4.1</version>-->
-        <!--        </dependency>-->
 
         <dependency>
             <groupId>org.apache.shiro</groupId>

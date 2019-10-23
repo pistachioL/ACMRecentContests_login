@@ -7,7 +7,7 @@ import team.huoguo.login.bean.Result;
 import team.huoguo.login.bean.rbac.UserInfo;
 import team.huoguo.login.service.MailService;
 import team.huoguo.login.bean.ResultFactory;
-import team.huoguo.login.Repository.UserRepository;
+import team.huoguo.login.repository.UserRepository;
 import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 
