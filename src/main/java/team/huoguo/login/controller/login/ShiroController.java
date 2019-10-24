@@ -3,6 +3,7 @@ package team.huoguo.login.controller.login;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
@@ -69,8 +70,8 @@ public class ShiroController {
 
     @GetMapping("/123")
 //    @RequiresAuthentication
-    public Result test(){
-        System.out.println(111);
+    public Result test(@NotNull String test){
+        System.out.println(test);
         return ResultFactory.buildSuccessResult("成功");
 //        throw new CustomException(1,"1");
     }

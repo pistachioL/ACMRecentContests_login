@@ -1,6 +1,7 @@
 package team.huoguo.login.controller;
 
 import cn.hutool.core.lang.Validator;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.bean.Result;
@@ -8,10 +9,10 @@ import team.huoguo.login.bean.ResultFactory;
 import team.huoguo.login.config.shiro.JWTUtil;
 import team.huoguo.login.repository.UserRepository;
 import team.huoguo.login.service.MailService;
+import team.huoguo.login.utils.Argon2Util;
 import team.huoguo.login.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author GreenHatHG
@@ -57,8 +58,8 @@ public class UserInfoController {
         return ResultFactory.buildSuccessResult("成功");
     }
 
-    @GetMapping("updateEmailCode")
-    public Result getUpdateEmailCode(HttpServletRequest request, String originalEmail){
+    @GetMapping("emailcode")
+    public Result getEmailVerificationCode(HttpServletRequest request,@NotNull String originalEmail){
          if(!Validator.isEmail(originalEmail)) {
              return ResultFactory.buildFailResult("邮箱格式不对");
          }
@@ -72,14 +73,14 @@ public class UserInfoController {
         }
         String code = mailService.getCode();
         System.out.println("code:  "+code);
-        mailService.sendMail(originalEmail, code);
+//        mailService.sendMail(originalEmail, code);
         redisUtil.setString(originalEmail+"updateEmail", code);
         return ResultFactory.buildSuccessResult("成功");
     }
 
     @PostMapping("updateEmail")
     public Result updateEmail(HttpServletRequest request,
-                              String originalEmail, String code, String newEmail){
+                              @NotNull String originalEmail, @NotNull  String code, @NotNull String newEmail){
         Object redisCode = redisUtil.getString(originalEmail+"updateEmail");
         if(redisCode == null || !redisCode.toString().equals(code)){
             return ResultFactory.buildFailResult("验证码已过期");
@@ -100,6 +101,19 @@ public class UserInfoController {
         return ResultFactory.buildSuccessResult("成功");
     }
 
-
+    @PostMapping("updatePassword")
+    public Result updatePassword(HttpServletRequest request,
+                                 @NotNull String email, @NotNull String code, @NotNull String password){
+        String id = JWTUtil.getId(request.getHeader("Authorization"));
+        if(!userRepository.findById(id).isPresent()){
+            return ResultFactory.buildFailResult("查无此人");
+        }
+        if(!code.toLowerCase().equals(redisUtil.getString(email+"updateEmail"))){
+            return ResultFactory.buildFailResult("验证码错误");
+        }
+        redisUtil.deleteKey(email+"updateEmail");
+        userRepository.updatePasswordById(Argon2Util.hash(password), id);
+        return ResultFactory.buildSuccessResult("成功");
+    }
 
 }
