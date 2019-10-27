@@ -30,16 +30,16 @@ public class JWTUtil {
      * 校验token是否正确
      *
      * @param token    密钥
-     * @param username 登录名
+     * @param id
      * @param secret 秘钥
      * @return
      */
-    public static boolean verify(String token, String username, String secret) {
+    public static boolean verify(String token, String id, String secret) {
         try {
             //对秘钥进行加密后再与用户名混淆在一起
             Algorithm algorithm = Algorithm.HMAC256(secret);
             JWTVerifier verifier = JWT.require(algorithm)
-                    .withClaim("username", username)
+                    .withClaim("id", id)
                     .build();
             DecodedJWT jwt = verifier.verify(token);
             return true;

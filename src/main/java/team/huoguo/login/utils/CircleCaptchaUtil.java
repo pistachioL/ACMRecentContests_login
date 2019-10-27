@@ -1,7 +1,7 @@
 package team.huoguo.login.utils;
 
 import cn.hutool.captcha.CaptchaUtil;
-import cn.hutool.captcha.ShearCaptcha;
+import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.IdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,9 +17,9 @@ public class CircleCaptchaUtil{
 
     private RedisUtil redisUtil;
     /**
-     * 定义图形验证码的长、宽、验证码字符数、干扰线宽度
+     * 定义图形验证码的长、宽
      */
-    private ShearCaptcha captcha = CaptchaUtil.createShearCaptcha(250, 100, 4, 4);
+    private LineCaptcha captcha = CaptchaUtil.createLineCaptcha(200, 100);
     private CircleCaptcha circleCaptcha = new CircleCaptcha();
 
     @Autowired

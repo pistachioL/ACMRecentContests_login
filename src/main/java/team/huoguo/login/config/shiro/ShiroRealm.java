@@ -83,13 +83,13 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
-        String userName = JWTUtil.getUsername(token);
-        String secert = userRepository.getCredentials(userName);
+        String id = JWTUtil.getId(token);
+        String secert = userRepository.getCredentials(id);
 
         /**
          * token为空或者不通过
          */
-        if (StringUtils.isBlank(token) || !JWTUtil.verify(token, userName, secert)) {
+        if (StringUtils.isBlank(token) || !JWTUtil.verify(token, id, secert)) {
             throw new AuthenticationException("token校验不通过");
         }
 

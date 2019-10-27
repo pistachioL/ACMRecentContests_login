@@ -44,6 +44,11 @@ public class UserInfo implements Serializable {
     private String city;
 
     /**
+     * 头像图片链接
+     */
+    private String avatar;
+
+    /**
      * 创建时间
      */
     @CreatedDate
