@@ -10,6 +10,7 @@ import team.huoguo.login.config.shiro.JWTUtil;
 import team.huoguo.login.repository.UserRepository;
 import team.huoguo.login.service.MailService;
 import team.huoguo.login.utils.Argon2Util;
+import team.huoguo.login.utils.FileHandleUtil;
 import team.huoguo.login.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,11 @@ public class UserInfoController {
     private MailService mailService;
     @Autowired
     private RedisUtil redisUtil;
+
+    /**
+     * 用户头像文件存放路径
+     */
+    private static final String basePath = "resources/avatar/";
 
     @PutMapping("/username")
     public Result updateUserName(HttpServletRequest request, @NotNull String username){
@@ -73,12 +79,12 @@ public class UserInfoController {
         }
         String code = mailService.getCode();
         System.out.println("code:  "+code);
-//        mailService.sendMail(originalEmail, code);
+        mailService.sendMail(originalEmail, code);
         redisUtil.setString(originalEmail+"updateEmail", code);
         return ResultFactory.buildSuccessResult("成功");
     }
 
-    @PostMapping("updateEmail")
+    @PutMapping("email")
     public Result updateEmail(HttpServletRequest request,
                               @NotNull String originalEmail, @NotNull  String code, @NotNull String newEmail){
         Object redisCode = redisUtil.getString(originalEmail+"updateEmail");
@@ -101,7 +107,7 @@ public class UserInfoController {
         return ResultFactory.buildSuccessResult("成功");
     }
 
-    @PostMapping("updatePassword")
+    @PutMapping("password")
     public Result updatePassword(HttpServletRequest request,
                                  @NotNull String email, @NotNull String code, @NotNull String password){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
@@ -113,6 +119,28 @@ public class UserInfoController {
         }
         redisUtil.deleteKey(email+"updateEmail");
         userRepository.updatePasswordById(Argon2Util.hash(password), id);
+        return ResultFactory.buildSuccessResult("成功");
+    }
+
+    @PutMapping("avatar")
+    public Result updateAvatar(HttpServletRequest request,
+                               @NotNull String avatarUrl){
+        String id = JWTUtil.getId(request.getHeader("Authorization"));
+        if(!userRepository.findById(id).isPresent()){
+            return ResultFactory.buildFailResult("查无此人");
+        }
+        try{
+            userRepository.updateAvatarById(avatarUrl, id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultFactory.buildFailResult("更新失败-->" + e.getMessage());
+        }
+        try{
+            FileHandleUtil.saveAvatarFromUrl(avatarUrl, id);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultFactory.buildFailResult("保存失败-->" + e.getMessage());
+        }
         return ResultFactory.buildSuccessResult("成功");
     }
 

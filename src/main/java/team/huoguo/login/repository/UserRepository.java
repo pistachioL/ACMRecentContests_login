@@ -16,11 +16,11 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
 
     UserInfo findByMail(String mail);
     /**
-     * @param username 用户名
+     * @param id
      * @return 数据库中对应的密码
      */
-    @Query(value = "select password from userinfo where username = ?1", nativeQuery = true)
-    String getCredentials(String username);
+    @Query(value = "select password from userinfo where id = ?1", nativeQuery = true)
+    String getCredentials(String id);
 
     @Query(value = "select mail from userinfo where id = ?1")
     String findEmailById(String id);
@@ -49,4 +49,9 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Modifying
     @Query(value = "update userinfo t set t.password=?1 where t.id=?2", nativeQuery = true)
     void updatePasswordById(String password, String id);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update userinfo t set t.avatar=?1 where t.id=?2", nativeQuery = true)
+    void updateAvatarById(String avatar, String id);
 }

@@ -10,7 +10,7 @@
     </parent>
     <groupId>team.huoguo</groupId>
     <artifactId>login</artifactId>
-    <version>1.0.0</version>
+    <version>2.0.0</version>
     <name>login</name>
     <description>Demo project for Spring Boot</description>
 
@@ -69,8 +69,7 @@
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <version>17.0.0</version>
         </dependency>
 
         <dependency>
@@ -110,9 +109,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.qiniu</groupId>
-            <artifactId>qiniu-java-sdk</artifactId>
-            <version>[7.2.0, 7.2.99]</version>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
 
     </dependencies>
