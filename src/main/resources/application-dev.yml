@@ -44,12 +44,8 @@ spring:
       mail:
         debug: true
 
-#  servlet:
-#    multipart:
-#      enabled: true
-#      location: src/main/resources/img/
-#      file-size-threshold: 1MB
-#      max-file-size: 2MB
+  quartz:
+    job-store-type: jdbc
 
 server:
   port: 8082
@@ -60,20 +56,9 @@ server:
   use-forward-headers: true
   address: 127.0.0.1
 
-#shiro:
-#  enabled: true
-#  web:
-#    enabled: true
-#  loginUrl: /login
-#  successUrl: /index
-#  unauthorizedUrl: /login
-#  sessionManager:
-#    sessionIdCookieEnabled: true
-#    sessionIdUrlRewritingEnabled: true
-
-qiniu:
-  accessKey: ANJS5owl4TouX7YMZqUwKKKMDWuWJy_PDAIujGVc
-  secretKey: GJXLYDM0hXGKAeqXtEbFtnTBIUyviMxkTPGlZ3HZ
-  bucket: acmrecentcontents-code
-
 API: /api/v1
+#三分钟内可发送邮件次数
+TIMES: 5
+
+SEND_MAIL: false
+
