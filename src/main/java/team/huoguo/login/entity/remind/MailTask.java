@@ -19,7 +19,6 @@ public class MailTask extends QuartzJobBean{
     @Override
     protected void executeInternal(JobExecutionContext context) {
         JobDataMap jobDataMap = context.getMergedJobDataMap();
-        System.out.println(jobDataMap.getString("content"));
         mailUtil.remindMail(jobDataMap.getString("to"), jobDataMap.getString("content"));
     }
 }
