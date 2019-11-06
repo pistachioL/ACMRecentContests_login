@@ -84,5 +84,5 @@ API: /api/v1
 #三分钟内可发送邮件次数
 TIMES: 5
 
-SEND_MAIL: false
+SEND_MAIL: true
 

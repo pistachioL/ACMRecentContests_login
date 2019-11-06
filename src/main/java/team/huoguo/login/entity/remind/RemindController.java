@@ -1,5 +1,6 @@
 package team.huoguo.login.entity.remind;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.jetbrains.annotations.NotNull;
@@ -66,6 +67,20 @@ public class RemindController {
             return ResultFactory.buildFailResult(s);
         }
 
+        return ResultFactory.buildSuccessResult("删除成功");
+    }
+
+    @DeleteMapping("/names")
+    public Result deleteRemindInfoByNames(HttpServletRequest request,
+                                         @RequestBody @NotNull JSONObject jsonObject){
+        String id = JWTUtil.getId(request.getHeader("Authorization"));
+        JSONArray names = jsonObject.getJSONArray("names");
+        for(Object name : names){
+            String s = quartzJobService.deleteJob(name.toString(), id);
+            if(!"".equals(s)){
+                return ResultFactory.buildFailResult(s);
+            }
+        }
         return ResultFactory.buildSuccessResult("删除成功");
     }
 

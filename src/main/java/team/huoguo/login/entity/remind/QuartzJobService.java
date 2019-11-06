@@ -33,6 +33,10 @@ public class QuartzJobService {
             return "操作失败：当前比赛已过期！";
         }
 
+        if(sendDate.compareTo(DateUtil.now()) < 0){
+            return "操作失败：不能小于当前时间";
+        }
+
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put("content", mailUtil.remindMailContent(contest));
         jobDataMap.put("to", to);
