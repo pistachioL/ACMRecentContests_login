@@ -1,12 +1,10 @@
 package team.huoguo.login.common.exception;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -15,10 +13,10 @@ import team.huoguo.login.entity.resp.Result;
 import team.huoguo.login.entity.resp.ResultFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
+import java.util.Set;
 
 /**
  * 异常控制处理器
@@ -76,30 +74,23 @@ public class ExceptionAdvice {
     }
 
     /**
-     * 捕捉校验异常(BindException)
+     * 捕捉校验异常(ConstraintViolationException)
      * @return
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(BindException.class)
-    public Result validException(BindException e) {
-        e.printStackTrace();
-        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        Map<String, Object> result = this.getValidError(fieldErrors);
-        return ResultFactory.buildCustomResult(HttpStatus.BAD_REQUEST.value(), result.get("errorMsg").toString(), result.get("errorList"));
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Result validException(ConstraintViolationException e) {
+        StringBuilder message = new StringBuilder();
+        Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+        for (ConstraintViolation<?> violation : violations) {
+            Path path = violation.getPropertyPath();
+            String[] pathArr = StringUtils.splitByWholeSeparatorPreserveAllTokens(path.toString(), ".");
+            message.append(pathArr[1]).append(violation.getMessage()).append(",");
+        }
+        message = new StringBuilder(message.substring(0, message.length() - 1));
+        return ResultFactory.buildFailResult(message.toString());
     }
 
-    /**
-     * 捕捉校验异常(MethodArgumentNotValidException)
-     * @return
-     */
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Result validException(MethodArgumentNotValidException e) {
-        e.printStackTrace();
-        List<FieldError> fieldErrors = e.getBindingResult().getFieldErrors();
-        Map<String, Object> result = this.getValidError(fieldErrors);
-        return ResultFactory.buildCustomResult(HttpStatus.BAD_REQUEST.value(), result.get("errorMsg").toString(), result.get("errorList"));
-    }
 
     /**
      * 捕捉其他所有自定义异常
@@ -147,23 +138,5 @@ public class ExceptionAdvice {
             return HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return HttpStatus.valueOf(statusCode);
-    }
-
-    /**
-     * 获取校验错误信息
-     * @param fieldErrors
-     * @return
-     */
-    private Map<String, Object> getValidError(List<FieldError> fieldErrors) {
-        Map<String, Object> result = new HashMap<String, Object>(16);
-        List<String> errorList = new ArrayList<String>();
-        StringBuffer errorMsg = new StringBuffer("校验异常(ValidException):");
-        for (FieldError error : fieldErrors) {
-            errorList.add(error.getField() + "-" + error.getDefaultMessage());
-            errorMsg.append(error.getField()).append("-").append(error.getDefaultMessage()).append(".");
-        }
-        result.put("errorList", errorList);
-        result.put("errorMsg", errorMsg);
-        return result;
     }
 }

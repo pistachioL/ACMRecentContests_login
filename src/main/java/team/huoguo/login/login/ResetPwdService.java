@@ -1,19 +1,18 @@
 package team.huoguo.login.login;
 
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import team.huoguo.login.common.utils.Argon2Util;
+import team.huoguo.login.common.utils.RedisUtil;
 import team.huoguo.login.entity.resp.Result;
 import team.huoguo.login.entity.resp.ResultFactory;
 import team.huoguo.login.entity.userinfo.UserRepository;
-import team.huoguo.login.common.utils.Argon2Util;
-import team.huoguo.login.common.utils.RedisUtil;
 
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author GreenHatHG
@@ -36,15 +35,10 @@ public class ResetPwdService {
     }
 
     @PostMapping("/resetpwd")
-    public Result reset(@RequestBody Map<String, Object> payload){
-        JSONObject jsonObject = JSONUtil.parseObj(payload);
-        String mail = jsonObject.getStr("mail");
-        String code = jsonObject.getStr("code");
-        String password = jsonObject.getStr("password");
-        if(code == null){
-            return ResultFactory.buildFailResult("验证码为空");
-        }
-        else if(!code.toLowerCase().equals(redisUtil.getString(mail+"resetpwd"))){
+    public Result reset(@RequestParam @NotBlank @Size(max = 30) String mail,
+                        @RequestParam @NotBlank @Size(max = 30) String code,
+                        @RequestParam @NotBlank @Size(max = 30) String password){
+        if(!code.toLowerCase().equals(redisUtil.getString(mail+"resetpwd"))){
             return ResultFactory.buildFailResult("验证码错误");
         }
         redisUtil.deleteKey(mail+"resetpwd");

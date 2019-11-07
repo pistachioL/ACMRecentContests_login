@@ -34,6 +34,7 @@ spring:
       charset: UTF-8
       enabled: true
 
+
   mail:
     username: acmrecentcontents@aliyun.com
     password: TDWMADJAP98
@@ -70,6 +71,10 @@ spring:
             dataSource: mysql
             #调度实例失效的检查时间间隔
             clusterCheckinInterval: 10000
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 500KB
 
 server:
   port: 8082
@@ -82,7 +87,7 @@ server:
 
 API: /api/v1
 #三分钟内可发送邮件次数
-TIMES: 5
+TIMES: 10
 
 SEND_MAIL: true
 

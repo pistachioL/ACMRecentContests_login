@@ -1,18 +1,22 @@
 package team.huoguo.login.login;
 
-import cn.hutool.core.lang.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import team.huoguo.login.common.GlobalConst;
-import team.huoguo.login.entity.resp.Result;
-import team.huoguo.login.entity.userinfo.UserInfo;
-import team.huoguo.login.common.utils.MailUtil;
-import team.huoguo.login.entity.resp.ResultFactory;
-import team.huoguo.login.entity.userinfo.UserRepository;
 import team.huoguo.login.common.utils.Argon2Util;
+import team.huoguo.login.common.utils.MailUtil;
 import team.huoguo.login.common.utils.RedisUtil;
+import team.huoguo.login.entity.resp.Result;
+import team.huoguo.login.entity.resp.ResultFactory;
+import team.huoguo.login.entity.userinfo.UserInfo;
+import team.huoguo.login.entity.userinfo.UserRepository;
 
-import java.util.Map;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author GreenHatHG
@@ -41,18 +45,15 @@ public class RegisterController {
     }
 
     @PostMapping("/register")
-    public Result register(@RequestBody UserInfo payload, @RequestParam(name = "code") String code) {
-        String username = payload.getUsername();
+    public Result register(@RequestParam @NotBlank @Size(max = 30) String username,
+                           @RequestParam @NotBlank @Size(max = 30) String code,
+                           @RequestParam @NotBlank @Size(max = 30) String password,
+                           @RequestParam @NotBlank @Size(max = 30) @Email String mail) {
         Object redisCode = redisUtil.getString(username);
         if(redisCode == null || !redisCode.toString().equals(code)){
             return ResultFactory.buildFailResult("验证码已过期");
         }
 
-        String password = payload.getPassword();
-        String mail = payload.getMail();
-        if(!Validator.isEmail(mail)){
-            return ResultFactory.buildFailResult("邮箱格式不对");
-        }
         if(userRepository.findByMail(mail) != null){
             return ResultFactory.buildFailResult("邮箱已存在");
         }
@@ -73,13 +74,9 @@ public class RegisterController {
     }
 
     @PostMapping("/code")
-    public Result getCode(@RequestBody Map<String, String> payload){
-        String username = payload.get("username");
-        String mail = payload.get("mail");
-        String type = payload.get("type");
-        if(!Validator.isEmail(mail)){
-            return ResultFactory.buildFailResult("邮箱格式不对");
-        }
+    public Result getCode(@RequestParam @NotBlank @Size(max = 30) String username,
+                          @RequestParam @NotBlank @Size(max = 30) @Email String mail,
+                          @RequestParam @NotBlank String type){
         UserInfo userInfo = userRepository.findByMail(mail);
         if("register".equals(type) && userInfo != null){
             return ResultFactory.buildFailResult("邮箱已存在");

@@ -3,14 +3,16 @@ package team.huoguo.login.entity.remind;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.entity.resp.Result;
 import team.huoguo.login.entity.resp.ResultFactory;
 import team.huoguo.login.shiro.JWTUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ import java.util.Map;
  **/
 @RestController
 @RequestMapping(value="${API}"+"/remind")
+@Validated
 public class RemindController {
 
     @Autowired
@@ -26,10 +29,10 @@ public class RemindController {
 
     @PostMapping("/remind_info")
     public Result addRemind(HttpServletRequest request,
-            @RequestParam @NotNull String contest,
-            @RequestParam @NotNull String remindDate,
-            @RequestParam int type,
-            @RequestParam @NotNull String contact){
+            @RequestParam @NotBlank @Size(max = 50) String contest,
+            @RequestParam @NotBlank @Size(max = 30) String remindDate,
+            @RequestParam @NotBlank int type,
+            @RequestParam @NotBlank @Size(max = 30) String contact){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         JSONObject jsonObject = JSONUtil.parseObj(contest);
         String s = null;
@@ -60,7 +63,7 @@ public class RemindController {
 
     @DeleteMapping("/name")
     public Result deleteRemindInfoByName(HttpServletRequest request,
-                                         @RequestParam @NotNull String name){
+                                         @RequestParam @NotBlank @Size(max = 30) String name){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         String s = quartzJobService.deleteJob(name, id);
         if(!"".equals(s)){
@@ -72,7 +75,7 @@ public class RemindController {
 
     @DeleteMapping("/names")
     public Result deleteRemindInfoByNames(HttpServletRequest request,
-                                         @RequestBody @NotNull JSONObject jsonObject){
+                                         @RequestBody @NotBlank JSONObject jsonObject){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         JSONArray names = jsonObject.getJSONArray("names");
         for(Object name : names){
@@ -86,10 +89,10 @@ public class RemindController {
 
     @PutMapping("/info")
     public Result updateRemindInfo(HttpServletRequest request,
-                    @RequestParam @NotNull String contest,
-                    @RequestParam @NotNull String remindDate,
+                    @RequestParam @NotBlank @Size(max = 50) String contest,
+                    @RequestParam @NotBlank @Size(max = 30) String remindDate,
                     @RequestParam int type,
-                    @RequestParam @NotNull String contact){
+                    @RequestParam @NotBlank @Size(max = 30) String contact){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         String s = quartzJobService.editJob(contact, remindDate, JSONUtil.parseObj(contest), id);
         if(!"".equals(s)){
@@ -101,7 +104,7 @@ public class RemindController {
 
     @PostMapping("/pause")
     public Result pauseRemind(HttpServletRequest request,
-                              @RequestParam @NotNull String name){
+                              @RequestParam @NotBlank @Size(max = 30) String name){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         String s = quartzJobService.pauseJob(name, id);
         if(!"".equals(s)){
@@ -113,7 +116,7 @@ public class RemindController {
 
     @PostMapping("/resume")
     public Result resumeRemind(HttpServletRequest request,
-                              @RequestParam @NotNull String name){
+                              @RequestParam @NotBlank @Size(max = 30) String name){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         String s = quartzJobService.resumeJob(name, id);
         if(!"".equals(s)){

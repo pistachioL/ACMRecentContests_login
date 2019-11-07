@@ -1,28 +1,31 @@
 package team.huoguo.login.entity.userinfo;
 
 import cn.hutool.core.lang.Validator;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team.huoguo.login.common.GlobalConst;
-import team.huoguo.login.entity.resp.Result;
-import team.huoguo.login.entity.resp.ResultFactory;
-import team.huoguo.login.common.utils.MailUtil;
-import team.huoguo.login.shiro.JWTUtil;
 import team.huoguo.login.common.utils.Argon2Util;
 import team.huoguo.login.common.utils.FileHandleUtil;
+import team.huoguo.login.common.utils.MailUtil;
 import team.huoguo.login.common.utils.RedisUtil;
+import team.huoguo.login.entity.resp.Result;
+import team.huoguo.login.entity.resp.ResultFactory;
+import team.huoguo.login.shiro.JWTUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author GreenHatHG
  **/
 @RestController
 @RequestMapping(value="${API}"+"/userinfo")
+@Validated
 public class UserInfoController {
 
     @Autowired
@@ -35,10 +38,11 @@ public class UserInfoController {
     /**
      * 用户头像文件存放路径
      */
-    private static final String basePath = "resources/avatar/";
+    private static final String BASE_PATH = "resources/avatar/";
 
     @PutMapping("/username")
-    public Result updateUserName(HttpServletRequest request, @NotNull String username){
+    public Result updateUserName(HttpServletRequest request,
+                                 @NotBlank @Size(max = 30) String username){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         if(!userRepository.findById(id).isPresent()){
             return ResultFactory.buildFailResult("查无此人");
@@ -53,7 +57,8 @@ public class UserInfoController {
     }
 
     @PutMapping("/city")
-    public Result updateCity(HttpServletRequest request, @NotNull String city){
+    public Result updateCity(HttpServletRequest request,
+                             @NotBlank @Size(max = 30) String city){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         if(!userRepository.findById(id).isPresent()){
             return ResultFactory.buildFailResult("查无此人");
@@ -68,7 +73,8 @@ public class UserInfoController {
     }
 
     @GetMapping("emailcode")
-    public Result getEmailVerificationCode(HttpServletRequest request,@NotNull String originalEmail){
+    public Result getEmailVerificationCode(HttpServletRequest request,
+                                           @NotBlank @Size(max = 30) String originalEmail){
          if(!Validator.isEmail(originalEmail)) {
              return ResultFactory.buildFailResult("邮箱格式不对");
          }
@@ -91,7 +97,9 @@ public class UserInfoController {
 
     @PutMapping("email")
     public Result updateEmail(HttpServletRequest request,
-                              @NotNull String originalEmail, @NotNull  String code, @NotNull String newEmail){
+                              @NotBlank @Size(max = 30) String originalEmail,
+                              @NotBlank @Size(max = 30)  String code,
+                              @NotBlank @Size(max = 30) String newEmail){
         Object redisCode = redisUtil.getString(originalEmail+"updateEmail");
         if(redisCode == null || !redisCode.toString().equals(code)){
             return ResultFactory.buildFailResult("验证码已过期");
@@ -114,7 +122,9 @@ public class UserInfoController {
 
     @PutMapping("password")
     public Result updatePassword(HttpServletRequest request,
-                                 @NotNull String email, @NotNull String code, @NotNull String password){
+                                 @NotBlank @Size(max = 30) String email,
+                                 @NotBlank @Size(max = 30) String code,
+                                 @NotBlank @Size(max = 30) String password){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         if(!userRepository.findById(id).isPresent()){
             return ResultFactory.buildFailResult("查无此人");
@@ -129,7 +139,7 @@ public class UserInfoController {
 
     @PutMapping("avatar")
     public Result updateAvatar(HttpServletRequest request,
-                               @NotNull String avatarUrl){
+                               @NotBlank @Size(max = 100) String avatarUrl){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         if(!userRepository.findById(id).isPresent()){
             return ResultFactory.buildFailResult("查无此人");

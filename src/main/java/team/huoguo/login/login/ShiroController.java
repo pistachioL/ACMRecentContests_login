@@ -1,20 +1,19 @@
 package team.huoguo.login.login;
 
 import cn.hutool.core.lang.Validator;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import team.huoguo.login.common.utils.Argon2Util;
+import team.huoguo.login.common.utils.RedisUtil;
 import team.huoguo.login.entity.resp.Result;
 import team.huoguo.login.entity.resp.ResultFactory;
 import team.huoguo.login.entity.userinfo.UserInfo;
-import team.huoguo.login.shiro.JWTUtil;
 import team.huoguo.login.entity.userinfo.UserRepository;
-import team.huoguo.login.common.utils.Argon2Util;
-import team.huoguo.login.common.utils.RedisUtil;
+import team.huoguo.login.shiro.JWTUtil;
 
-import java.util.Map;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * @author GreenHatHG
@@ -37,22 +36,17 @@ public class ShiroController {
     }
 
     @PostMapping("/login")
-    public Result login(@RequestBody Map<String, Object> payload) {
+    public Result login(@RequestParam @NotBlank @Size(max = 30) String code,
+                        @RequestParam @NotBlank @Size(max = 30) String imgId,
+                        @RequestParam @NotBlank @Size(max = 30) String username,
+                        @RequestParam @NotBlank @Size(max = 30) String password) {
         final String errorMessage = "用户名或密码错误";
-        JSONObject jsonObject = JSONUtil.parseObj(payload);
 
-        String code = jsonObject.getStr("code");
-        String fileName = jsonObject.getStr("imgId");
-
-        if(code != null && !code.toLowerCase().equals(redisUtil.getString(fileName))){
+        if(code != null && !code.toLowerCase().equals(redisUtil.getString(imgId))){
             return ResultFactory.buildFailResult("验证码错误");
         }
-        String username = jsonObject.getStr("username");
-        String password = jsonObject.getStr("password");
 
-        if(fileName != null){
-            redisUtil.deleteKey(fileName);
-        }
+        redisUtil.deleteKey(imgId);
         UserInfo userInfo = null;
         if(!Validator.isEmail(username)){
             userInfo = userRepository.findByUsername(username);
