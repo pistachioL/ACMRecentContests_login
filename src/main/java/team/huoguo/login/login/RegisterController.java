@@ -85,7 +85,7 @@ public class RegisterController {
             return ResultFactory.buildFailResult("邮箱不存在");
         }
         if(redisUtil.tooManyTimes(mail)){
-            return ResultFactory.buildFailResult("该邮箱发送次数，请稍后再试");
+            return ResultFactory.buildFailResult("该邮箱发送次数已上限，请稍后再试");
         }
         String code = mailUtil.getCode();
         System.out.println("code:  "+code);

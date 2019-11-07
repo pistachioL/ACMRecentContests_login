@@ -46,16 +46,17 @@ public class RedisUtil {
      */
     public void setString(String key, String value) {
         redisTemplate.opsForValue().set(key, value);
-        //十分钟过期
+        //三分钟过期
         expire(key, EXPIRE_TIME);
     }
 
     /**
-     * 普通缓存放入int类型的value
+     *  key中储存的数字值加value
+     *  如果 key 不存在，那么 key 的值会先被初始化为 0 ，然后再执行 INCR 操作。
      * @param key
      * @param value
      */
-    public void setInt(String key, long value){
+    public void incr(String key, long value){
         redisTemplate.opsForValue().increment(key, value);
         expire(key, EXPIRE_TIME);
     }
@@ -85,19 +86,13 @@ public class RedisUtil {
      */
     public boolean tooManyTimes(String mail){
         mail = mail + "times";
-        Object o = getString(mail);
-        if(o == null){
-            setInt(mail, 1);
-            return false;
-        }
-        int num = Integer.parseInt(o.toString());
+        incr(mail, 1);
+        int num = Integer.parseInt(getString(mail).toString());
+        System.out.println(num);
         if(num > times){
             return true;
-        }else{
-            num++;
-            setInt(mail, num);
-            return false;
         }
+        return false;
     }
 
 }

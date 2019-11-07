@@ -29,9 +29,9 @@ public class RemindController {
 
     @PostMapping("/remind_info")
     public Result addRemind(HttpServletRequest request,
-            @RequestParam @NotBlank @Size(max = 50) String contest,
+            @RequestParam @NotBlank @Size(max = 500) String contest,
             @RequestParam @NotBlank @Size(max = 30) String remindDate,
-            @RequestParam @NotBlank int type,
+            @RequestParam int type,
             @RequestParam @NotBlank @Size(max = 30) String contact){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         JSONObject jsonObject = JSONUtil.parseObj(contest);
@@ -89,7 +89,7 @@ public class RemindController {
 
     @PutMapping("/info")
     public Result updateRemindInfo(HttpServletRequest request,
-                    @RequestParam @NotBlank @Size(max = 50) String contest,
+                    @RequestParam @NotBlank @Size(max = 500) String contest,
                     @RequestParam @NotBlank @Size(max = 30) String remindDate,
                     @RequestParam int type,
                     @RequestParam @NotBlank @Size(max = 30) String contact){
