@@ -7,5 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public interface ForumRepository extends JpaRepository<Forum, String> {
     Forum findAllById(String id);
+
 }
 

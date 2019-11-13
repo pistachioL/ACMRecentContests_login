@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * @author GreenHatHG
  */
@@ -53,4 +55,11 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Modifying
     @Query(value = "update userinfo t set t.avatar=?1 where t.id=?2", nativeQuery = true)
     void updateAvatarById(String avatar, String id);
+
+    @Query(value = "select distinct f.id, u.avatar, u.username, f.title,f.date from userinfo u, post_forum f where f.user=u.id;",nativeQuery = true)
+    List<Object> getInfo();
+
+
+
+
 }

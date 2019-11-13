@@ -19,6 +19,7 @@ import team.huoguo.login.shiro.JWTUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 /**
  * @author GreenHatHG
@@ -158,5 +159,8 @@ public class UserInfoController {
         }
         return ResultFactory.buildSuccessResult("成功");
     }
+
+
+
 
 }

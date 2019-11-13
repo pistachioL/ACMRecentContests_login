@@ -6,11 +6,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import team.huoguo.login.entity.forum.Forum;
 import team.huoguo.login.shiro.rbac.SysRole;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -69,4 +72,17 @@ public class UserInfo implements Serializable {
     @JoinTable(name = "SysUserRole", joinColumns = { @JoinColumn(name = "uid") }
         ,inverseJoinColumns ={@JoinColumn(name = "roleId")})
     private Set<SysRole> roleList;
+
+
+
+    //    级联保存、更新、删除、刷新;延迟加载。当删除用户，会级联删除该用户的所有文章
+//    拥有mappedBy注解的实体类为关系被维护端的对象
+//    mappedBy="user"中的user是Forum中的user属性
+
+   @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    private List<Forum> article_id;//文章列表
+
+
+
+
 }
