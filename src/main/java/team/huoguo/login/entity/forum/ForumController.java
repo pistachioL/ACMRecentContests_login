@@ -38,13 +38,13 @@ import java.util.List;
     }
 
 
-    @GetMapping(value = "getDetail/{id}")
-    public Forum getDetail(@PathVariable String id) {   //获取详情页内容
+    @GetMapping(value = "getDetail")
+    public Forum getDetail(@RequestParam String id) {   //获取详情页内容
         return forumRepository.findAllById(id);
     }
 
 
-    @GetMapping(value = "getOther")
+    @GetMapping(value = "getOther") //获取头像 姓名
     public List<Object> getOther(){  //返回的是列表类型 很多篇评论
         return userRepository.getInfo();
     }
