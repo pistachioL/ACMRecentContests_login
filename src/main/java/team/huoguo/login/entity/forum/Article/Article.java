@@ -9,6 +9,7 @@ import team.huoguo.login.entity.forum.Comment.Comment;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class Article implements Serializable {
     @ElementCollection  //集合属性
     @Column(nullable = false)
     @OneToMany(mappedBy = "article_id",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
 //
   //  @ManyToOne(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)  //mappedBy对应多方的外键对象

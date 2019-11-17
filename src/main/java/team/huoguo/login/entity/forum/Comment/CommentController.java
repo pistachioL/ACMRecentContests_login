@@ -44,8 +44,13 @@ public class CommentController {
 
 
     @GetMapping(value = "/comments")
-    public List<Object> getComments(){
-        return commentRepository.findCommentById();
+    public  List<Object> getComments(@RequestParam String id){
+        return articleRepository.findCommentListById(id);
+    }
+
+    @GetMapping(value="/counts")
+    public long getCounts(){
+        return commentRepository.count();
     }
 
 }
