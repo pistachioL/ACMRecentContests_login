@@ -3,14 +3,12 @@ import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 import team.huoguo.login.entity.forum.Comment.Comment;
-import team.huoguo.login.entity.userinfo.UserInfo;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -46,17 +44,14 @@ public class Article implements Serializable {
 //  //  @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示author不能为空。删除文章，不影响用户
 //    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.ALL})
 //    @JoinColumn(name="user_id",referencedColumnName = "id")
-    @Column(nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd")   //String 反序列化为java.util.date
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private String user;
 
-   //评论数
-    @Column(nullable = false)
-    private int commentCount = 0;
 
-    //一篇文章对应多个评论
+
+    @ElementCollection  //集合属性
+    @Column(nullable = false)
+    private List<Comment> commentList;
+
 //
-//    @OneToMany(mappedBy = "article",cascade=CascadeType.ALL,fetch=FetchType.LAZY)  //mappedBy对应多方的外键对象
+  //  @ManyToOne(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)  //mappedBy对应多方的外键对象
     private String user_id;
 }

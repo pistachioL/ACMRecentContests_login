@@ -38,7 +38,7 @@ public class Comment implements Serializable {
     private String article_id;  //那一篇文章
 
     @Column(nullable = false)
-    private String user_id;
+    private String from_user_id;
 
 
 

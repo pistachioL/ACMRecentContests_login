@@ -24,7 +24,7 @@ import java.util.Optional;
 
     @RequestMapping(value = "/postArticle", method = RequestMethod.POST)
     public Article postForum(HttpServletRequest request, @RequestBody Article forum){   //发送评论内容
-        forum.setUser(JWTUtil.getId(request.getHeader("Authorization")));  //获取token
+        forum.setUser_id(JWTUtil.getId(request.getHeader("Authorization")));  //获取token
         return forumRepository.save(forum);
 
     }

@@ -78,7 +78,7 @@ public class UserInfo implements Serializable {
 //    拥有mappedBy注解的实体类为关系被维护端的对象
 //    mappedBy="user"中的user是Forum中的user属性
 
-    @OneToMany(mappedBy = "user",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+    @OneToMany(mappedBy = "user_id",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Article> article_id;//文章列表
 
 
