@@ -58,7 +58,7 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     void updateAvatarById(String avatar, String id);
 
 
-    @Query(value = "select distinct f.id, u.avatar, u.username, f.title,f.date,f.content from userinfo u, article f where f.user_id=u.id;",nativeQuery = true)
+    @Query(value = "select distinct f.id, u.avatar, u.username, f.title,f.date,f.content from userinfo u, article f where f.user_id=u.id",nativeQuery = true)
     List<Object> getInfo();
 
 

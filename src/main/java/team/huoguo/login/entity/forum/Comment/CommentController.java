@@ -44,7 +44,7 @@ public class CommentController {
 
 
     @GetMapping(value = "/comments")
-    public List<Comment> getComments(){
+    public List<Object> getComments(){
         return commentRepository.findCommentById();
     }
 

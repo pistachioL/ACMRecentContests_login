@@ -49,6 +49,7 @@ public class Article implements Serializable {
 
     @ElementCollection  //集合属性
     @Column(nullable = false)
+    @OneToMany(mappedBy = "article_id",cascade=CascadeType.ALL,fetch=FetchType.LAZY)
     private List<Comment> commentList;
 
 //
