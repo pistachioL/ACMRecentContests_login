@@ -1,30 +1,36 @@
-package team.huoguo.login.entity.forum;
-
+package team.huoguo.login.entity.forum.Article;
+import javax.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
+import team.huoguo.login.entity.forum.Comment.Comment;
 import team.huoguo.login.entity.userinfo.UserInfo;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
 @Entity
-@Table(name = "post_forum")
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
-public class Forum implements Serializable {
+public class Article implements Serializable {
     @Id
     @GeneratedValue(generator = "jpa-uuid")
+    @Column(nullable = false)
     private String id;
-    @Column
+
+    @Column(nullable = false)
     private String title;
-    @Column
+
+    @Column(nullable = false)
     private String content;
 
-    @Column
+    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")   //String 反序列化为java.util.date
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date date;
@@ -40,12 +46,17 @@ public class Forum implements Serializable {
 //  //  @ManyToOne(cascade={CascadeType.MERGE,CascadeType.REFRESH},optional=false)//可选属性optional=false,表示author不能为空。删除文章，不影响用户
 //    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.ALL})
 //    @JoinColumn(name="user_id",referencedColumnName = "id")
-//    private UserInfo user;//所属作者
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")   //String 反序列化为java.util.date
     @JsonFormat(pattern = "yyyy-MM-dd")
     private String user;
 
+   //评论数
+    @Column(nullable = false)
+    private int commentCount = 0;
 
-
+    //一篇文章对应多个评论
+//
+//    @OneToMany(mappedBy = "article",cascade=CascadeType.ALL,fetch=FetchType.LAZY)  //mappedBy对应多方的外键对象
+    private String user_id;
 }

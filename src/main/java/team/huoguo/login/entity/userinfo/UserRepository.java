@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.OrderBy;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Query(value = "select password from userinfo where id = ?1", nativeQuery = true)
     String getCredentials(String id);
 
-    @Query(value = "select mail from userinfo where id = ?1")
+    @Query(value = "select mail from userinfo where id = ?1",nativeQuery = true)
     String findEmailById(String id);
 
     @Transactional
@@ -56,8 +57,10 @@ public interface UserRepository extends JpaRepository<UserInfo, String> {
     @Query(value = "update userinfo t set t.avatar=?1 where t.id=?2", nativeQuery = true)
     void updateAvatarById(String avatar, String id);
 
-    @Query(value = "select distinct f.id, u.avatar, u.username, f.title,f.date,f.content from userinfo u, post_forum f where f.user=u.id;",nativeQuery = true)
+
+    @Query(value = "select distinct f.id, u.avatar, u.username, f.title,f.date,f.content from userinfo u, article f where f.user=u.id;",nativeQuery = true)
     List<Object> getInfo();
+
 
 
 
