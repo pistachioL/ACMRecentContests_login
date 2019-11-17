@@ -36,7 +36,7 @@ public class CommentController {
         comment.setId(jsonObject.getStr("id"));  //该评论的id
         comment.setFrom_user_id(JWTUtil.getId(request.getHeader("Authorization")));  //获取用户id
         comment.setComment_content(jsonObject.getStr("content"));
-        comment.setComment_time(jsonObject.getStr("date"));
+        comment.setComment_time(jsonObject.getDate("date"));
         comment.setArticle_id(jsonObject.getStr("id")); //对应文章的id
         return commentRepository.save(comment);
 

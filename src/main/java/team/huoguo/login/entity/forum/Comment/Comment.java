@@ -11,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -29,10 +30,10 @@ public class Comment implements Serializable {
     @Column(nullable = false)
     private String comment_content;
 
+    @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")   //String 反序列化为java.util.date
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Column(nullable = false)
-    private String comment_time;
+    private Date comment_time;
 
     @Column(nullable = false)
     private String article_id;  //那一篇文章
