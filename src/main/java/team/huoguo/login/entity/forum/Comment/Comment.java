@@ -3,7 +3,6 @@ package team.huoguo.login.entity.forum.Comment;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import org.apache.tomcat.jni.User;
 import org.hibernate.annotations.GenericGenerator;
 
 import org.springframework.format.annotation.DateTimeFormat;

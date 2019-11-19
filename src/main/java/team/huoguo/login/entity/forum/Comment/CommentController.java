@@ -1,15 +1,18 @@
 package team.huoguo.login.entity.forum.Comment;
 
+import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.entity.forum.Article.Article;
 import team.huoguo.login.entity.forum.Article.ArticleRepository;
+import team.huoguo.login.entity.userinfo.UserInfo;
+import team.huoguo.login.entity.userinfo.UserRepository;
 import team.huoguo.login.shiro.JWTUtil;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author Pistachio
@@ -26,6 +29,8 @@ public class CommentController {
     @Autowired
     ArticleRepository articleRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
 
     //在某篇文章中发表评论
@@ -44,8 +49,40 @@ public class CommentController {
 
 
     @GetMapping(value = "/comments")
-    public  List<Object> getComments(@RequestParam String id){
-        return articleRepository.findCommentListById(id);
+    public JSONObject getComments(@RequestParam String id){
+        JSONObject jsonObject = new JSONObject();
+
+        Article article  = (Article)articleRepository.findCommentListById(id); //通过id找到对应的文章,并查找出文章的所有CommentList
+        List <Comment> comments = article.getCommentList();
+
+//        jsonObject.put("comments", comments);  //把数据库中comments的内容放进jsonObject
+//        处理评论的用户
+        List<Map<String, String>> info = new ArrayList<>();
+        for(Comment comment :comments){
+            Map<String, String> map = new HashMap<>(2);
+            Optional<UserInfo> optionalUserInfo = userRepository.findById(comment.getFrom_user_id()); //从评论表中取到相应的用户信息
+            if(!optionalUserInfo.isPresent()){
+                continue;
+            }
+            UserInfo userInfo = optionalUserInfo.get();
+//            info.add(userInfo.getUsername());
+//            info.add(userInfo.getAvatar());
+            map.put("username", userInfo.getUsername());
+            map.put("avatar", userInfo.getAvatar());
+            map.put("comment_content",comment.getComment_content());
+
+
+            info.add(map);
+        }
+
+
+//        List<Object> commentList = new ArrayList<>();
+//        int len = comments.size();
+//        for(int i =  0; i < len; i++){
+//            comments.add(i,info);
+//        }
+        jsonObject.put("commentList",info);
+        return jsonObject;
     }
 
     @GetMapping(value="/counts")

@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Component
 public interface ArticleRepository extends JpaRepository<Article, String> {
-    List<Object> findCommentListById(String id);
+    Object findCommentListById(String id);
+
 }
 
