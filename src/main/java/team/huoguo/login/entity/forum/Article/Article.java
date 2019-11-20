@@ -47,7 +47,8 @@ public class Article implements Serializable {
 //    @ManyToOne(cascade={CascadeType.MERGE,CascadeType.ALL})
 //    @JoinColumn(name="user_id",referencedColumnName = "id")
 
-
+//    @Column(nullable = false)
+//    private Integer commentCount = 0;
 
     @ElementCollection  //集合属性
     @Column(nullable = false)

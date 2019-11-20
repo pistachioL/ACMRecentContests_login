@@ -1,8 +1,6 @@
 package team.huoguo.login.entity.forum.Comment;
 
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team.huoguo.login.entity.forum.Article.Article;
@@ -49,7 +47,7 @@ public class CommentController {
 
 
     @GetMapping(value = "/comments")
-    public JSONObject getComments(@RequestParam String id){
+    public JSONObject getComments(@RequestParam String id){   //查看评论
         JSONObject jsonObject = new JSONObject();
 
         Article article  = (Article)articleRepository.findCommentListById(id); //通过id找到对应的文章,并查找出文章的所有CommentList
@@ -65,29 +63,21 @@ public class CommentController {
                 continue;
             }
             UserInfo userInfo = optionalUserInfo.get();
-//            info.add(userInfo.getUsername());
-//            info.add(userInfo.getAvatar());
             map.put("username", userInfo.getUsername());
             map.put("avatar", userInfo.getAvatar());
             map.put("comment_content",comment.getComment_content());
-
-
             info.add(map);
         }
 
-
-//        List<Object> commentList = new ArrayList<>();
-//        int len = comments.size();
-//        for(int i =  0; i < len; i++){
-//            comments.add(i,info);
-//        }
         jsonObject.put("commentList",info);
         return jsonObject;
     }
 
     @GetMapping(value="/counts")
-    public long getCounts(){
-        return commentRepository.count();
+    public int getCounts(@RequestParam String id){
+        Article article  = (Article)articleRepository.findCommentListById(id); //通过id找到对应的文章,并查找出文章的所有CommentList
+        return article.getCommentList().size();
+
     }
 
 }

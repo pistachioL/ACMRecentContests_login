@@ -16,8 +16,8 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment,String> {
 //        @Query(value = "select distinct c.comment_content,u.username,u.avatar,c.comment_time from comment c,article a,userinfo u where a.id = c.article_id AND a.user_id=u.id;",nativeQuery = true)
 //        List<Object> findCommentById();
-
-        List<Object> findUserInfoById(String id);
+     //   int countByArticle_id(String id);
+     //   List<Object> findUserInfoById(String id);
 
 }
 
