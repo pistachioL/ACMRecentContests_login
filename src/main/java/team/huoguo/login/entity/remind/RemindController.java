@@ -29,10 +29,10 @@ public class RemindController {
 
     @PostMapping("/remind_info")
     public Result addRemind(HttpServletRequest request,
-            @RequestParam @NotBlank @Size(max = 500) String contest,
-            @RequestParam @NotBlank @Size(max = 30) String remindDate,
-            @RequestParam int type,
-            @RequestParam @NotBlank @Size(max = 30) String contact){
+                            @RequestParam @NotBlank @Size(max = 500) String contest,
+                            @RequestParam @NotBlank @Size(max = 30) String remindDate,
+                            @RequestParam int type,
+                            @RequestParam @NotBlank @Size(max = 30) String contact){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         JSONObject jsonObject = JSONUtil.parseObj(contest);
         String s = null;
@@ -61,6 +61,7 @@ public class RemindController {
         return ResultFactory.buildSuccessResult(list);
     }
 
+
     @DeleteMapping("/name")
     public Result deleteRemindInfoByName(HttpServletRequest request,
                                          @RequestParam @NotBlank @Size(max = 30) String name){
@@ -75,7 +76,7 @@ public class RemindController {
 
     @DeleteMapping("/names")
     public Result deleteRemindInfoByNames(HttpServletRequest request,
-                                         @RequestBody @NotBlank JSONObject jsonObject){
+                                         @RequestBody JSONObject jsonObject){
         String id = JWTUtil.getId(request.getHeader("Authorization"));
         JSONArray names = jsonObject.getJSONArray("names");
         for(Object name : names){

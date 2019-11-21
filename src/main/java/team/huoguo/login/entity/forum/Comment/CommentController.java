@@ -10,6 +10,7 @@ import team.huoguo.login.entity.userinfo.UserRepository;
 import team.huoguo.login.shiro.JWTUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -66,6 +67,9 @@ public class CommentController {
             map.put("username", userInfo.getUsername());
             map.put("avatar", userInfo.getAvatar());
             map.put("comment_content",comment.getComment_content());
+            SimpleDateFormat sdf =   new SimpleDateFormat( " yyyy-MM-dd" );
+            String strdate = sdf.format(comment.getComment_time());
+            map.put("comment_time",strdate);
             info.add(map);
         }
 
